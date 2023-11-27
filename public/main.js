@@ -1,16 +1,17 @@
 $(document).ready(function () {
     $('#title').autocomplete({
-        source: async function(req, res) {
-            let data = await fetch(`http://localhost:8002/search?query=${req.term}`)
-                .then(results = results.json())
-                .then(results = results.map(result => {
-                    return {
-                        label: result.title,
-                        value: result.title, 
-                        id: result._id
-                    }
-                }))
-                res(data)
+        source: async function(request,response) {
+            let data= await fetch(`http://localhost:8000/search?query=${request.term}`)
+                    .then(results => results.json())
+                    .then(results => results.map(result => {
+                        return {
+                            label: result.title,
+                            value: result.title,
+                            id: result._id
+                        }
+                    }))
+                response(data)
+                //console.log(response)
         },
         minLength: 2,
         select: function(event, ui) {
@@ -21,9 +22,9 @@ $(document).ready(function () {
                     $('#cast').empty()
                     result.cast.forEach(cast =>
                         {
-                            $(cast).append(`<li>${cast}</li>`)
+                            $("#cast").append(`<li>${cast}</li>`)
                         })
-                        $('img').attr('src', result.poster)
+                        $('img').attr('src',result.poster)
                 })
         }
     })
